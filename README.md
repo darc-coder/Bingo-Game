@@ -2,7 +2,7 @@
 Bingo Game By Nitin
 
 To Run:
-`### npm start`
+### `npm start`
 
 To Play:
 
