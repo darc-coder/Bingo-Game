@@ -1,6 +1,9 @@
 # BingoGame
 Bingo Game By Nitin
 
+To Run:
+## npm start
+
 To Play:
 
 1. Step 1:
