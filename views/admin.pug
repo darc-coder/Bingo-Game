@@ -1,0 +1,177 @@
+doctype html
+head
+  meta(charset='UTF-8')
+  meta(http-equiv='X-UA-Compatible' content='IE=edge')
+  meta(name='viewport' content='width=device-width, initial-scale=1.0')
+  title Admin Panel - Bingo
+  script(src='https://cdn.socket.io/3.1.3/socket.io.min.js')
+  link(rel="stylesheet", href="adminStyle.css")
+  link(rel="icon" href="../Bingoicons/adminsettings.png")
+  link(rel="apple-touch-icon" href="../Bingoicons/adminsettings.png")
+
+
+body
+  header
+    | Admin Panel
+    <h1 style="text-transform: capitalize;"> Hello #{name} </h1>
+    <a href="/logout">Log out</a>
+  .leftbarpull(onclick='pushpull(event)')
+    <span class="material-icons" style="font-size: 60px;">chevron_right</span>
+
+  .leftBar
+    //- add spans of table elements
+    
+  .rightBar
+    //- add spans with user
+  .container
+    .controller
+      <label for="gameSize5" class="gameSelect">
+        <input type="radio" name="gameSize" id="gameSize5" value=5>
+        <div class="box">5 &times; 5</div>
+      </label>
+      <label for="gameSize7" class="gameSelect">
+        <input type="radio" name="gameSize" id="gameSize7" checked value=7>
+        <div class="box">7 &times; 7</div>
+      </label>
+      <label onclick="Generate()">Generate</label>
+      <label onclick='send(msg.value)' style='background-color: darkcyan'>
+        <span class="material-icons">send</span>Send
+      </label>
+    
+    div.oneLineResult
+      input#msg(type='text' name='sendmsg' placeholder="value to send" disabled)
+      input#sentCount(type='text' name='sentCount' placeholder=" " disabled)
+    input(type='submit' value='Generate & Send' onclick='generateSend()')
+  footer
+    .main-text
+      | Coded and Maintained By Nitz (Nitin).
+
+script.
+
+  const inputbtn = document.querySelector('input#msg');
+  const sentCount = document.querySelector('#sentCount')
+  let gameRadioInputs = document.querySelectorAll('.controller input');
+  let rightbar = document.querySelector('.rightBar');
+  let leftbar = document.querySelector('.leftBar');
+
+  let Generated = [];
+  let value = 0;
+  let generatedFlag = false;
+
+  function generateBingo(gameSize){
+    //- Reset Generated Array
+    Generated= [];
+    leftbar.innerText = '';
+
+    for(let i = 0; i < gameSize*gameSize; i++){
+      let number = 0;
+      let newspan = document.createElement('span');
+      newspan.className = 'numinline';
+      newspan.style = '--order:'+i
+      while (true) {
+        number = (Math.floor(Math.random() * gameSize * gameSize) + 1);
+        if (Generated.indexOf(number) === -1) {
+          Generated.push(number);
+          break;
+        }
+      }
+      newspan.innerText = number;
+      leftbar.appendChild(newspan);
+    }
+  }
+  //- END of Array generater
+
+  function Generate(){
+    if(!generatedFlag){
+      generatedFlag = true;
+      value = Generated.shift();
+      inputbtn.value = value;
+      sentCount.value = '';
+      
+      return value
+    }
+    else{
+      alert('please send the previous value first before generating more.');
+    }
+  }
+
+  function generateSend(){
+    let value = Generate();
+    if(value){
+      sentCount.value = '';
+      send(value);
+    }
+    return
+  }
+
+  gameRadioInputs.forEach(singleRadio => {
+    if(singleRadio.checked){
+      generateBingo(singleRadio.value)
+    }
+    singleRadio.addEventListener('click', () => {
+        generateBingo(singleRadio.value)
+    });
+  })
+
+  const adminsock = io('/admin', {auth:{token: 'nitinz'}})
+
+  //- on user connected and sent username and id
+  adminsock.on('usernameid', (username, id) => {
+    let newdiv = document.createElement('div');
+    newdiv.className = 'userDiv';
+    newdiv.id = id;
+
+    let newnamespan = document.createElement('span');
+    newnamespan.innerText = `${username}`;
+    newdiv.appendChild(newnamespan);
+
+
+    let bingo = ['B', 'I', 'N', 'G', 'O'];
+    bingo.forEach(ele =>{
+      let newspan = document.createElement('span');
+      newspan.innerText = ele;
+      newdiv.appendChild(newspan);
+    })
+    
+    rightbar.appendChild(newdiv);
+  })
+
+  //- on user disconnected
+
+  adminsock.on('userdisconnected', id=>{
+    let toRemove = document.getElementById(`${id}`);
+    if(toRemove)
+      rightbar.removeChild(toRemove);
+  });
+
+  adminsock.on('bingoKey', id=>{
+    let bingoSpansWithID = Array.from(document.querySelectorAll(`#${id} span:not(:first-child)`));
+    bingoSpansWithID.every( bingoKey =>{
+      if(bingoKey.classList.contains('active')){
+        //- proceed
+        return true;
+      }
+      else{
+        bingoKey.classList.add('active');
+        return false;
+      }
+    });
+  })
+  
+  function send(msgs){
+    generatedFlag = false;
+    sentCount.value += 'Sent\t';
+
+    console.log("Now sending:", msgs);
+    adminsock.emit('admin-sent', msgs);
+  }
+
+  function pushpull(e){
+    leftbar.classList.toggle('active');
+    let target = e.currentTarget;
+    if(target.innerText == 'chevron_right')
+      target.innerHTML = `<span class="material-icons active" style="font-size: 60px;">chevron_left</span>`;
+    else
+      target.innerHTML = `<span class="material-icons" style="font-size: 60px;">chevron_right</span>`;
+
+  }

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <script src='https://cdn.socket.io/3.1.3/socket.io.min.js'></script>
+    <link rel="icon" href="../Bingoicons/bingo.png">
+    <link rel="apple-touch-icon" href="../Bingoicons/bingo.png">
+    <title>Bingo Game</title>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <h2>Bingo Game</h2>
+        </div>
+        <div class="leftTopBox">
+            Value:
+            <div class="value" id="value">
+                <span class="material-icons" style="font-size: 70px;">access_time</span>
+            </div>
+        </div>
+        <div class="rightBar">
+            <span class="letter" id="1" onclick="markedBingo(event)">B</span>
+            <span class="letter" id="2" onclick="markedBingo(event)">I</span>
+            <span class="letter" id="3" onclick="markedBingo(event)">N</span>
+            <span class="letter" id="4" onclick="markedBingo(event)">G</span>
+            <span class="letter" id="5" onclick="markedBingo(event)">O</span>
+        </div>
+        <div class="main">
+            <div class="controller">
+                <label for="gameSize5" class="gameSelect">
+                    <input type="radio" name="gameSize" id="gameSize5" value=5>
+                    <div class="box">5 &times; 5</div>
+                </label>
+                <label for="gameSize7" class="gameSelect">
+                    <input type="radio" name="gameSize" id="gameSize7" checked value=7>
+                    <div class="box">7 &times; 7</div>
+                </label>
+                <label for="gameSizeReload" class="gameSelect" onclick="ReloadTable()">
+                    <div class="box" style="color: white;">
+                        <span class="material-icons">refresh</span>
+                    </div>
+                </label>
+            </div>
+            <div class="game-table">
+                <table id="bingoTable"></table>
+                <!-- Fills the Data with JS -->
+            </div>
+        </div>
+    </div>
+    <footer>
+        <div class="main-text">Coded and Maintained By Nitz (Nitin).</div>
+    </footer>
+
+    <script src="./script-noblock.js"></script>
+    <script src="./checklines.js"></script>
+    <script defer src="./Game-noblock.js"></script>
+
+</body>
+
+</html>

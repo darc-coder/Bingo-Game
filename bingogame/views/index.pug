@@ -1,0 +1,36 @@
+doctype html
+html(lang="en")
+    head
+        meta(charset="UTF-8")
+        meta(name="viewport", content="width=device-width, initial-scale=1.0")
+        link(rel="stylesheet", href="adminStyle.css")
+        link(rel="icon" href="../Bingoicons/id-card.png")
+        link(rel="apple-touch-icon" href="../Bingoicons/id-card.png")
+
+        title Bingo Game - by Nitz
+    body
+        main
+            .container
+                .text-main 
+                    h2 What is Your Name?
+                form(action="/acceptName", method="post" id="sendNameForm" onsubmit="return checkTextField(this)") 
+                .input-main
+                    input(type="text", name="username" id="username" placeholder="Enter Your Name" form="sendNameForm" required)
+                .input-submit
+                    input(type="submit", name="send" form="sendNameForm")
+        footer
+            .main-text
+                | Coded and Maintained By Nitz (Nitin).
+        
+        <script>
+            |function checkTextField(form) {
+            |    var text = form.username.value;
+            |        if (text == '') {
+            |            alert("Name must be filled out");
+            |            return false
+            |        }
+            |    localStorage.setItem("bingousername", text);
+            |    return true;
+            |}
+        </script>
+

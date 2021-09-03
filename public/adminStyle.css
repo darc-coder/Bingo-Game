@@ -1,0 +1,270 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+@import url('https://fonts.googleapis.com/icon?family=Material+Icons');
+
+:root{
+    counter-reset: userCount;
+}
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+    transition: all 0.5s ease-in-out;
+    color: white;
+}
+
+body{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden;
+    background: url('https://source.unsplash.com/1600x900/?nightsky,stars');
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+header{
+    position: absolute;
+    top: 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 4px 24px;
+    height: 50px;
+    width: 100%;
+    background-color: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(4px);
+}
+
+footer{
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+}
+
+footer .main-text{
+    width: 100%;
+    background-color: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(4px);
+    padding: 8px;
+    text-align: center;
+}
+
+.leftbarpull{
+    position: absolute;
+    left: 10px;
+    cursor: pointer;
+}
+
+.leftBar , .rightBar{
+    position: absolute;
+    min-width: 20vw;
+    display: flex;
+    flex-direction: column;
+    justify-self: center;
+}
+
+.leftBar{
+    display: grid;
+    grid-template-columns: auto auto;
+    left: 10px;
+    transform: translateX(-105%);
+}
+
+.material-icons{
+    animation: rightmovepullbtn 0.5s linear reverse;
+}
+
+.material-icons.active{
+    animation: rightmovepullbtn 0.5s linear forwards;
+}
+
+@keyframes rightmovepullbtn{
+    to{
+        transform: translateX(20vw);
+    }
+}
+
+.leftBar.active{
+    transition: all 0.5s;
+    transform: translateX(0%);
+}
+
+.rightBar{
+    right: 10px;
+}
+
+.leftBar span.numinline{
+    display: inline-flex;
+    width: 100%;
+    padding: 0px 4px;
+    background-color: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(4px);
+    /* animation starts */
+    opacity: 0%;
+    animation: riseIn 0.25s ease-in-out calc(var(--order) * 200ms);
+    animation-fill-mode: forwards;
+    justify-content: center;
+}
+
+@keyframes riseIn{
+    from {
+        transform: translateY(+100vh);
+    }
+    to {
+        transform: translateY(0);
+        opacity: 100%;
+    }    
+}
+
+.rightBar div.userDiv{
+    display: inline-flex;
+    justify-content: center;
+    width: 100%;
+    padding: 0px 4px;
+    background-color: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(4px);
+    animation: rightmovepullbtn 0.25s linear reverse;
+}
+
+.rightBar div.userDiv::before{
+    counter-increment: userCount;
+    content: counter(userCount) ".";
+    padding: 4px;
+}
+
+.rightBar div.userDiv span{
+    padding: 4px 8px;
+    text-align: center;
+}
+
+.rightBar div.userDiv span:not(:first-child){
+    width: 15%;
+    justify-self: center;
+}
+
+.rightBar div.userDiv span.active{
+    background-color: rgba(55, 255, 95, 0.5);
+}
+
+@media screen and (max-width: 1100px){
+    .rightBar{
+        right: 1%;
+    }
+}
+
+.container .controller{
+  display: grid;
+  width: 100%;
+  justify-content: space-evenly;
+  grid-template: auto auto / auto auto;
+  grid-gap: 10px;
+}
+
+.container .controller input[type='radio']{
+  display: none;
+}
+.box{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    cursor: pointer;
+    color: dimgray;
+}
+.controller input[type=radio]:checked + .box{
+    background-color: lightseagreen;
+    color: white;
+}
+.container .controller label{
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    height: 100px;
+    width:100px;
+    cursor: pointer;
+    background-color: rgba(255,255,255,0.15);
+    backdrop-filter: blur(4px);
+}
+
+.container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 50vh;
+    width: 50vw;
+    background: rgba(255, 255, 255, 0.25);
+    backdrop-filter: blur(4px);
+}
+
+.error *{
+    color: red;
+}
+
+.heading{
+    margin: 20px;
+    color: white;
+}
+
+.input-box{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 100%;
+}
+form{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+div.oneLineResult{
+    display: flex;
+    flex-direction: row;
+}
+
+div.oneLineResult #msg, div.oneLineResult #sentCount{
+    width: 150px;
+}
+
+input[type="password"], input[type="text"]{
+    background: none;
+    border: none;
+    outline: none;
+    border-bottom: 3px solid black;
+    margin: 20px auto;
+    color: white;
+    padding: 8px 4px;
+    text-align: center;
+    width: 300px;
+}
+
+
+input[type="password"]:focus , input[type="text"]:focus{
+    border-bottom: 3px solid white;
+    width: 380px;
+}
+
+input[type="password"]::placeholder, input[type="text"]::placeholder{
+    color: white;
+    font-style: italic;
+}
+
+input[type="submit"]{
+    width: 300px;
+    text-align: center;
+    background-color: darkcyan;
+    color: white;
+    border: none;
+    outline: none;
+    padding: 8px 4px;
+    cursor: pointer;
+}

@@ -1,0 +1,28 @@
+doctype html
+html(lang="en")
+    head
+        meta(charset="UTF-8")
+        meta(http-equiv="X-UA-Compatible", content="IE=edge")
+        meta(name="viewport", content="width=device-width, initial-scale=1.0")
+        title Admin Login Panel
+        link(rel="stylesheet", href="adminStyle.css")
+        link(rel="icon" href="../Bingoicons/password.png")
+        link(rel="apple-touch-icon" href="../Bingoicons/password.png")
+
+
+    body 
+        .container 
+            span.error
+                h3 #{errormessage}
+            span.heading
+                h2 Admin Password:
+            .input-box
+                <form action='/login' method='post'>
+                .top
+                    <input type='password' name='email' placeholder="Type your Password"/>
+                .bottom
+                    <input type='submit' />
+                </form>
+        footer
+            .main-text
+                | Coded and Maintained By Nitz (Nitin).
