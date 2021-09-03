@@ -13,6 +13,6 @@ To Play:
 3. Step 3:
   * Everyone Choose Game Size Appropriately (Same Size).
 4. Step 4:
-  * Admin Generaes and Sends Numbers
+  * Admin Generates and Sends Numbers
 
 Enjoy Your Bingo Game.
